@@ -108,7 +108,7 @@ static void nxhello_kbdin(NXWINDOW hwnd, uint8_t nch, FAR const uint8_t *ch,
  * Private Data
  ****************************************************************************/
 
-static const char g_hello[] = "Hello, World!";
+static const char g_hello[] = "hello,world";
 
 /****************************************************************************
  * Public Data
@@ -247,8 +247,10 @@ static void nxhello_center(FAR struct nxgl_point_s *pos,
    * the bounding box
    */
 
-  pos->x = (g_nxhello.xres - width) / 2;
-  pos->y = (g_nxhello.yres - fontset->mxheight) / 2;
+  //pos->x = (g_nxhello.xres - width) / 3;
+  //pos->y = (g_nxhello.yres - fontset->mxheight) / 2;
+  pos->x = 0;
+  pos->y = 0;
 }
 
 /****************************************************************************
@@ -347,6 +349,7 @@ void nxhello_hello(NXWINDOW hwnd)
   FAR const char *ptr;
   FAR struct nxgl_point_s pos;
   FAR struct nxgl_rect_s dest;
+  FAR struct nxgl_rect_s test_rec;
   FAR const void *src[CONFIG_NX_NPLANES];
   unsigned int glyphsize;
   unsigned int mxstride;
@@ -374,6 +377,13 @@ void nxhello_hello(NXWINDOW hwnd)
   printf("nxhello_hello: Position (%d,%d)\n", pos.x, pos.y);
 
   /* Now we can say "hello" in the center of the display. */
+
+  test_rec.pt1.x = pos.x+60;
+  test_rec.pt1.y = pos.y+60;
+  test_rec.pt2.x = pos.x + 150;
+  test_rec.pt2.y = pos.y + 150;
+  nxgl_mxpixel_t color = 0x11;
+  ret = nx_fill((NXWINDOW)hwnd,&test_rec,&color);
 
   for (ptr = g_hello; *ptr; ptr++)
     {

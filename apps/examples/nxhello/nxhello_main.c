@@ -274,7 +274,7 @@ int nxhello_main(int argc, char *argv[])
 
   sleep(1);
   nxhello_hello(g_nxhello.hbkgd);
-  sleep(1);
+  sleep(1000);
 
   /* Release background */
 

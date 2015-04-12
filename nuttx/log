@@ -1,0 +1,47 @@
+nxlines_bkgd.c: In function ‘nxlines_mousein’:
+nxlines_bkgd.c:177:13: error: invalid storage class for function ‘nxlines_kbdin’
+ static void nxlines_kbdin(NXWINDOW hwnd, uint8_t nch, FAR const uint8_t *ch,
+             ^
+nxlines_bkgd.c:177:13: warning: declaration of ‘nxlines_kbdin’ shadows a global declaration [-Wshadow]
+nxlines_bkgd.c:83:13: warning: shadowed declaration is here [-Wshadow]
+ static void nxlines_kbdin(NXWINDOW hwnd, uint8_t nch, FAR const uint8_t *ch,
+             ^
+nxlines_bkgd.c: In function ‘nxlines_kbdin’:
+nxlines_bkgd.c:177:36: warning: declaration of ‘hwnd’ shadows a parameter [-Wshadow]
+ static void nxlines_kbdin(NXWINDOW hwnd, uint8_t nch, FAR const uint8_t *ch,
+                                    ^
+nxlines_bkgd.c:164:38: warning: shadowed declaration is here [-Wshadow]
+ static void nxlines_mousein(NXWINDOW hwnd, FAR const struct nxgl_point_s *pos,
+                                      ^
+nxlines_bkgd.c:178:34: warning: declaration of ‘arg’ shadows a parameter [-Wshadow]
+                        FAR void *arg)
+                                  ^
+nxlines_bkgd.c:165:53: warning: shadowed declaration is here [-Wshadow]
+                          uint8_t buttons, FAR void *arg)
+                                                     ^
+nxlines_bkgd.c: In function ‘nxlines_mousein’:
+nxlines_bkgd.c:202:6: warning: declaration of ‘nxlines_test’ shadows a global declaration [-Wshadow]
+ void nxlines_test(NXWINDOW hwnd)
+      ^
+In file included from nxlines_bkgd.c:53:0:
+nxlines.h:175:13: warning: shadowed declaration is here [-Wshadow]
+ extern void nxlines_test(NXWINDOW hwnd);
+             ^
+nxlines_bkgd.c: In function ‘nxlines_test’:
+nxlines_bkgd.c:202:28: warning: declaration of ‘hwnd’ shadows a parameter [-Wshadow]
+ void nxlines_test(NXWINDOW hwnd)
+                            ^
+nxlines_bkgd.c:164:38: warning: shadowed declaration is here [-Wshadow]
+ static void nxlines_mousein(NXWINDOW hwnd, FAR const struct nxgl_point_s *pos,
+                                      ^
+nxlines_bkgd.c: In function ‘nxlines_mousein’:
+nxlines_bkgd.c:335:1: error: expected declaration or statement at end of input
+ }
+ ^
+nxlines_bkgd.c: At top level:
+nxlines_bkgd.c:83:13: warning: ‘nxlines_kbdin’ used but never defined [enabled by default]
+ static void nxlines_kbdin(NXWINDOW hwnd, uint8_t nch, FAR const uint8_t *ch,
+             ^
+make[2]: *** [nxlines_bkgd.o] Error 1
+make[1]: *** [examples/nxlines_all] Error 2
+make: *** [../apps/libapps.a] Error 2
