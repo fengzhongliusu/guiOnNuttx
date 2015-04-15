@@ -234,6 +234,7 @@ static void nxhello_center(FAR struct nxgl_point_s *pos,
           /* Add the font size */
 
           width += fbm->metric.width + fbm->metric.xoffset;
+		  printf("------%d-----%d\n",fbm->metric.width,fbm->metric.xoffset);
         }
       else
         {
@@ -241,7 +242,7 @@ static void nxhello_center(FAR struct nxgl_point_s *pos,
 
           width += fontset->spwidth;
         }
-    }
+    } 
 
   /* Now we know how to center the string.  Create a the position and
    * the bounding box
@@ -255,6 +256,7 @@ static void nxhello_center(FAR struct nxgl_point_s *pos,
 
 /****************************************************************************
  * Name: nxhello_initglyph
+ * 初始化每一个字符所在bgd上重叠层的背景色
  ****************************************************************************/
 
 static void nxhello_initglyph(FAR uint8_t *glyph, uint8_t height,
@@ -317,10 +319,9 @@ static void nxhello_initglyph(FAR uint8_t *glyph, uint8_t height,
   for (row = 0; row < height; row++)
     {
       /* Just copy the color value into the glyph memory */
-
       for (col = 0; col < width; col++)
         {
-          *ptr++ = CONFIG_EXAMPLES_NXHELLO_BGCOLOR;
+          *ptr++ = CONFIG_EXAMPLES_NXHELLO_BGCOLOR + row * 0x111111;
 #if CONFIG_NX_NPLANES > 1
 # warning "More logic is needed for the case where CONFIG_NX_PLANES > 1"
 #endif
@@ -354,6 +355,7 @@ void nxhello_hello(NXWINDOW hwnd)
   unsigned int glyphsize;
   unsigned int mxstride;
   int ret;
+  FAR struct nxgl_point_s test_pos;
 
   /* Get information about the font we are going to use */
 
@@ -375,20 +377,62 @@ void nxhello_hello(NXWINDOW hwnd)
 
   nxhello_center(&pos, fontset);
   printf("nxhello_hello: Position (%d,%d)\n", pos.x, pos.y);
+ 
+  /************************testing*********************/
+  //draw a rectagular 
+  //test_rec.pt1.x = pos.x+60;
+  //test_rec.pt1.y = pos.y+60;
+  //test_rec.pt2.x = pos.x + 150;
+  //test_rec.pt2.y = pos.y + 150;
+  nxgl_mxpixel_t rec_color = 0xDC143C;
+  //ret = nx_fill((NXWINDOW)hwnd,&test_rec,&rec_color);
+  
+  
+  //draw a rec by line 
+  FAR struct nxbe_window_s * wnd =  hwnd;
+
+  FAR struct nxgl_vector_s line1,line2,line3,line4,line5,line6;
+  nxgl_coord_t line_width = 3;
+  line1.pt1 = pos;
+  line1.pt2.x = pos.x + 479;
+  line2.pt2.y = pos.y;
+
+  line2.pt1.x = pos.x;
+  line2.pt1.y = pos.y + 239;
+  line2.pt2.x = pos.x + 479;
+  line2.pt2.y = pos.y + 239;
+
+  line3.pt1 = pos;
+  line3.pt2.x = pos.x;
+  line3.pt2.y = pos.y + 239;
+
+  line4.pt1.x = pos.x + 479;
+  line4.pt1.y = pos.y;
+  line4.pt2.x = pos.x + 479;
+  line4.pt2.y = pos.y + 239;
+
+  line5.pt1.x = pos.x;
+  line5.pt1.y = pos.y + 119;
+  line5.pt2.x = pos.x + 479;
+  line5.pt2.y = pos.y + 119;
+
+  line6.pt1.x = pos.x + 239;
+  line6.pt1.y = pos.y;
+  line6.pt2.x = pos.x + 239;
+  line6.pt2.y = pos.y + 239;
+  nx_drawline((NXWINDOW)hwnd,&line1,line_width,&rec_color); 
+  nx_drawline((NXWINDOW)hwnd,&line2,line_width,&rec_color); 
+  nx_drawline((NXWINDOW)hwnd,&line3,line_width,&rec_color); 
+  nx_drawline((NXWINDOW)hwnd,&line4,line_width,&rec_color); 
+  nx_drawline((NXWINDOW)hwnd,&line5,line_width,&rec_color); 
+  nx_drawline((NXWINDOW)hwnd,&line6,line_width,&rec_color); 
+  /************************testing*********************/
 
   /* Now we can say "hello" in the center of the display. */
-
-  test_rec.pt1.x = pos.x+60;
-  test_rec.pt1.y = pos.y+60;
-  test_rec.pt2.x = pos.x + 150;
-  test_rec.pt2.y = pos.y + 150;
-  nxgl_mxpixel_t color = 0x11;
-  ret = nx_fill((NXWINDOW)hwnd,&test_rec,&color);
-
   for (ptr = g_hello; *ptr; ptr++)
     {
       /* Get the bitmap font for this ASCII code */
-
+	  //获取每一个字符的位图信息
       fbm = nxf_getbitmap(g_nxhello.hfont, *ptr);
       if (fbm)
         {
@@ -397,10 +441,11 @@ void nxhello_hello(NXWINDOW hwnd)
           uint8_t fstride;      /* Width of the glyph row (in bytes) */
 
           /* Get information about the font bitmap */
-
+		  //每一个字符处于一个glyph中,宽度是字符宽加上字符相对glyph的x,y偏移
           fwidth  = fbm->metric.width + fbm->metric.xoffset;
           fheight = fbm->metric.height + fbm->metric.yoffset;
           fstride = (fwidth * CONFIG_EXAMPLES_NXHELLO_BPP + 7) >> 3;
+		  printf("%d %d %d\n",fheight,fwidth,fstride);
 
           /* Initialize the glyph memory to the background color */
 
@@ -415,7 +460,6 @@ void nxhello_hello(NXWINDOW hwnd)
                          fstride, fbm, CONFIG_EXAMPLES_NXHELLO_FONTCOLOR);
 
           /* Describe the destination of the font with a rectangle */
-
           dest.pt1.x = pos.x;
           dest.pt1.y = pos.y;
           dest.pt2.x = pos.x + fwidth - 1;
@@ -427,6 +471,21 @@ void nxhello_hello(NXWINDOW hwnd)
 #if CONFIG_NX_NPLANES > 1
 # warning "More logic is needed for the case where CONFIG_NX_PLANES > 1"
 #endif
+		  /**  nx_bitmap()
+		   * Description: Copy a rectangular region of a larger image into the rectangle in the specified window.
+		   *
+		   * Input Parameters:
+		   *
+		   * hwnd
+		   * The handle returned by nx_openwindow() or nx_requestbkgd() that specifies the window that will receive the bitmap image.
+		   * dest
+		   * Describes the rectangular on the display that will receive the bit map.
+		   * src
+		   * The start of the source image. This is an array source images of size CONFIG_NX_NPLANES (probably 1).
+		   * origin
+		   * The origin of the upper, left-most corner of the full bitmap. Both dest and origin are in window coordinates, however, the origin may lie outside of the display.
+		   * stride
+		   * The width of the full source image in bytes.*/
           ret = nx_bitmap((NXWINDOW)hwnd, &dest, src, &pos, fstride);
           if (ret < 0)
             {
