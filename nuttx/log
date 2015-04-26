@@ -179,125 +179,81 @@ make[1]: `libcxx.a' is up to date.
 make[1]: Leaving directory `/home/cshuo/topteam/guiOnNuttx/nuttx/libxx'
 make[1]: Entering directory `/home/cshuo/topteam/guiOnNuttx/apps'
 make[2]: Entering directory `/home/cshuo/topteam/guiOnNuttx/apps/examples/nxhello'
-make[2]: Nothing to be done for `all'.
+CC:  nxhello_bkgd.c
+nxhello_bkgd.c:122:1: error: expected ‘,’ or ‘;’ before ‘const’
+ const struct nx_callback_s g_nxhellocb =
+ ^
+nxhello_bkgd.c: In function ‘nxhello_center’:
+nxhello_bkgd.c:234:3: warning: pointer targets in passing argument 3 of ‘u2g’ differ in signedness [-Wpointer-sign]
+   u2g(g_hello,strlen(g_hello),gbk_str,GBKLEN);
+   ^
+In file included from nxhello_bkgd.c:56:0:
+nxhello.h:183:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+ extern int u2g(const char *inbuf,int inlen,char *outbuf,int outlen);
+            ^
+nxhello_bkgd.c:224:16: warning: unused variable ‘width’ [-Wunused-variable]
+   unsigned int width;
+                ^
+nxhello_bkgd.c:223:19: warning: unused variable ‘ptr’ [-Wunused-variable]
+   FAR const char *ptr;
+                   ^
+nxhello_bkgd.c:222:37: warning: unused variable ‘fbm’ [-Wunused-variable]
+   FAR const struct nx_fontbitmap_s *fbm;
+                                     ^
+nxhello_bkgd.c: In function ‘nxhello_hello’:
+nxhello_bkgd.c:374:3: warning: pointer targets in passing argument 3 of ‘u2g’ differ in signedness [-Wpointer-sign]
+   int ug_ret = u2g(g_hello,strlen(g_hello),gbk_str,GBKLEN);
+   ^
+In file included from nxhello_bkgd.c:56:0:
+nxhello.h:183:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+ extern int u2g(const char *inbuf,int inlen,char *outbuf,int outlen);
+            ^
+nxhello_bkgd.c:348:27: warning: unused variable ‘test_pos’ [-Wunused-variable]
+   FAR struct nxgl_point_s test_pos;
+                           ^
+nxhello_bkgd.c:343:26: warning: unused variable ‘test_rec’ [-Wunused-variable]
+   FAR struct nxgl_rect_s test_rec;
+                          ^
+nxhello_bkgd.c: In function ‘code_convert’:
+nxhello_bkgd.c:490:2: warning: pointer targets in passing argument 3 of ‘iconv’ differ in signedness [-Wpointer-sign]
+  if (iconv(cd,pin,&inlen,pout,&outlen)==-1){
+  ^
+In file included from nxhello_bkgd.c:50:0:
+/usr/include/iconv.h:42:15: note: expected ‘size_t * __restrict__’ but argument is of type ‘int *’
+ extern size_t iconv (iconv_t __cd, char **__restrict __inbuf,
+               ^
+nxhello_bkgd.c:490:2: warning: pointer targets in passing argument 5 of ‘iconv’ differ in signedness [-Wpointer-sign]
+  if (iconv(cd,pin,&inlen,pout,&outlen)==-1){
+  ^
+In file included from nxhello_bkgd.c:50:0:
+/usr/include/iconv.h:42:15: note: expected ‘size_t * __restrict__’ but argument is of type ‘int *’
+ extern size_t iconv (iconv_t __cd, char **__restrict __inbuf,
+               ^
+nxhello_bkgd.c:480:6: warning: unused variable ‘rc’ [-Wunused-variable]
+  int rc;
+      ^
+nxhello_bkgd.c: In function ‘u2g’:
+nxhello_bkgd.c:500:3: warning: passing argument 3 of ‘code_convert’ discards ‘const’ qualifier from pointer target type [enabled by default]
+   return code_convert("utf-8","gb2312",inbuf,inlen,outbuf,outlen);
+   ^
+nxhello_bkgd.c:477:5: note: expected ‘char *’ but argument is of type ‘const char *’
+ int code_convert(char *from_charset,char *to_charset,char *inbuf,int inlen,char *outbuf,int outlen)
+     ^
+nxhello_bkgd.c: At top level:
+nxhello_bkgd.c:142:13: warning: ‘nxhello_redraw’ defined but not used [-Wunused-function]
+ static void nxhello_redraw(NXWINDOW hwnd, FAR const struct nxgl_rect_s *rect,
+             ^
+nxhello_bkgd.c:154:13: warning: ‘nxhello_position’ defined but not used [-Wunused-function]
+ static void nxhello_position(NXWINDOW hwnd, FAR const struct nxgl_size_s *size,
+             ^
+nxhello_bkgd.c:189:13: warning: ‘nxhello_mousein’ defined but not used [-Wunused-function]
+ static void nxhello_mousein(NXWINDOW hwnd, FAR const struct nxgl_point_s *pos,
+             ^
+nxhello_bkgd.c:202:13: warning: ‘nxhello_kbdin’ defined but not used [-Wunused-function]
+ static void nxhello_kbdin(NXWINDOW hwnd, uint8_t nch, FAR const uint8_t *ch,
+             ^
+make[2]: *** [nxhello_bkgd.o] Error 1
 make[2]: Leaving directory `/home/cshuo/topteam/guiOnNuttx/apps/examples/nxhello'
-make[2]: Entering directory `/home/cshuo/topteam/guiOnNuttx/apps/examples/nxtext'
-make[2]: Nothing to be done for `all'.
-make[2]: Leaving directory `/home/cshuo/topteam/guiOnNuttx/apps/examples/nxtext'
-make[2]: Entering directory `/home/cshuo/topteam/guiOnNuttx/apps/platform'
-make[2]: Nothing to be done for `all'.
-make[2]: Leaving directory `/home/cshuo/topteam/guiOnNuttx/apps/platform'
-make[2]: Entering directory `/home/cshuo/topteam/guiOnNuttx/NxWidgets/UnitTests/CButton'
-AR:    cbutton_main.o cbuttontest.o
-AR:  cbgwindow.o
-AR:  cbitmap.o
-AR:  cbuttonarray.o
-AR:  cbutton.o
-AR:  ccallback.o
-AR:  ccheckbox.o
-AR:  ccyclebutton.o
-AR:  cglyphbutton.o
-AR:  cglyphsliderhorizontalgrip.o
-AR:  cglyphsliderhorizontal.o
-AR:  cgraphicsport.o
-AR:  cimage.o
-AR:  ckeypad.o
-AR:  clabel.o
-AR:  clatchbuttonarray.o
-AR:  clatchbutton.o
-AR:  clistboxdataitem.o
-AR:  clistbox.o
-AR:  clistdataitem.o
-AR:  clistdata.o
-AR:  cmultilinetextbox.o
-AR:  cnumericedit.o
-AR:  cnxfont.o
-AR:  cnxserver.o
-AR:  cnxstring.o
-AR:  cnxtimer.o
-AR:  cnxtkwindow.o
-AR:  cnxtoolbar.o
-AR:  cnxwidget.o
-AR:  cnxwindow.o
-AR:  cprogressbar.o
-AR:  cradiobuttongroup.o
-AR:  cradiobutton.o
-AR:  crect.o
-AR:  crlepalettebitmap.o
-AR:  cscaledbitmap.o
-AR:  cscrollbarhorizontal.o
-AR:  cscrollbarpanel.o
-AR:  cscrollbarvertical.o
-AR:  cscrollinglistbox.o
-AR:  cscrollingpanel.o
-AR:  cscrollingtextbox.o
-AR:  csliderhorizontalgrip.o
-AR:  csliderhorizontal.o
-AR:  csliderverticalgrip.o
-AR:  cslidervertical.o
-AR:  cstickybuttonarray.o
-AR:  cstickybutton.o
-AR:  cstickyimage.o
-AR:  cstringiterator.o
-AR:  ctabpanel.o
-AR:  ctextbox.o
-AR:  ctext.o
-AR:  cwidgetcontrol.o
-AR:  cwidgeteventhandlerlist.o
-AR:  cwindoweventhandlerlist.o
-AR:  glyph_arrowdown.o
-AR:  glyph_arrowleft.o
-AR:  glyph_arrowright.o
-AR:  glyph_arrowup.o
-AR:  glyph_backspace.o
-AR:  glyph_capslock.o
-AR:  glyph_checkboxmu.o
-AR:  glyph_checkboxoff.o
-AR:  glyph_checkboxon.o
-AR:  glyph_control.o
-AR:  glyph_cycle.o
-AR:  glyph_nxlogo160x160.o
-AR:  glyph_nxlogo320x320.o
-AR:  glyph_radiobuttonmu.o
-AR:  glyph_radiobuttonoff.o
-AR:  glyph_radiobuttonon.o
-AR:  glyph_return.o
-AR:  glyph_screendepthdown.o
-AR:  glyph_screendepthup.o
-AR:  glyph_screenflipdown.o
-AR:  glyph_screenflipup.o
-AR:  glyph_shift.o
-AR:  glyph_windowclose.o
-AR:  glyph_windowdepthdown.o
-AR:  glyph_windowdepthup.o
-AR:  singletons.o
-make[2]: Leaving directory `/home/cshuo/topteam/guiOnNuttx/NxWidgets/UnitTests/CButton'
+make[1]: *** [examples/nxhello_all] Error 2
 make[1]: Leaving directory `/home/cshuo/topteam/guiOnNuttx/apps'
-make[1]: Entering directory `/home/cshuo/topteam/guiOnNuttx/nuttx/fs'
-make[1]: `libfs.a' is up to date.
-make[1]: Leaving directory `/home/cshuo/topteam/guiOnNuttx/nuttx/fs'
-make[1]: Entering directory `/home/cshuo/topteam/guiOnNuttx/nuttx/drivers'
-make[1]: `libdrivers.a' is up to date.
-make[1]: Leaving directory `/home/cshuo/topteam/guiOnNuttx/nuttx/drivers'
-make[1]: Entering directory `/home/cshuo/topteam/guiOnNuttx/nuttx/binfmt'
-make[1]: `libbinfmt.a' is up to date.
-make[1]: Leaving directory `/home/cshuo/topteam/guiOnNuttx/nuttx/binfmt'
-make[1]: Entering directory `/home/cshuo/topteam/guiOnNuttx/nuttx/graphics'
-make[1]: `libgraphics.a' is up to date.
-make[1]: Leaving directory `/home/cshuo/topteam/guiOnNuttx/nuttx/graphics'
-make[1]: Entering directory `/home/cshuo/topteam/guiOnNuttx/nuttx/libnx'
-CC:  nxfonts/nxfonts_bitmaps_sans28x37.c
-nxfonts/nxfonts_bitmaps_sans28x37.c:34980:2: error: ‘FONTID_SANS28x37’ undeclared here (not in a function)
-  FONTID_SANS28x37,
-  ^
-nxfonts/nxfonts_bitmaps_sans28x37.c:34992:2: error: extra brace group at end of initializer
-  {
-  ^
-nxfonts/nxfonts_bitmaps_sans28x37.c:34992:2: error: (near initialization for ‘g_sans28x37_package’)
-nxfonts/nxfonts_bitmaps_sans28x37.c:34996:2: warning: excess elements in struct initializer [enabled by default]
-  }
-  ^
-nxfonts/nxfonts_bitmaps_sans28x37.c:34996:2: warning: (near initialization for ‘g_sans28x37_package’) [enabled by default]
-make[1]: *** [bin/nxfonts_bitmaps_sans28x37.o] Error 1
-make[1]: Leaving directory `/home/cshuo/topteam/guiOnNuttx/nuttx/libnx'
-make: *** [libnx/libnx.a] Error 2
+make: *** [../apps/libapps.a] Error 2

@@ -1310,3 +1310,24 @@ apps
  |- UnitTests
  |   `- README.txt
  `- README.txt
+
+
+
+
+
+/****** change for cn font*******/
+->code_convert() & u2g() ==>> 将中文utf编码装换成gb2312编码
+
+->修改font_package,添加中文字库(nxfonts_bitmap_sans28x37.c)
+
+->修改结构体 nx_fontset_s
+struct nx_fontset_s {
+	uint16_t first;
+	uint16_t nchars;
+	*****;
+}
+
+->修改nxf_getbitmap以及nxf_getglyphset函数以支持中文
+
+/****** change for cn font*******/
+
