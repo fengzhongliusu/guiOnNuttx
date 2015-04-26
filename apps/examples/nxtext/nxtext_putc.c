@@ -159,6 +159,7 @@ nxtext_allocglyph(FAR struct nxtext_state_s *st)
 
   /* But lets decrement all of the usecnts so that the new one one be so
    * far behind in the counts as the older ones.
+   * 整体的usecount 减去least use count
    */
 
   if (luusecnt > 1)

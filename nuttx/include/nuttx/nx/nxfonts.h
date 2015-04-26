@@ -240,8 +240,8 @@ struct nx_fontbitmap_s
 
 struct nx_fontset_s
 {
-  uint8_t  first;             /* First bitmap character code */
-  uint8_t  nchars;            /* Number of bitmap character codes */
+  uint16_t  first;             /* First bitmap character code */
+  uint16_t  nchars;            /* Number of bitmap character codes */
   FAR const struct nx_fontbitmap_s *bitmap;
 };
 
@@ -256,7 +256,7 @@ struct nx_font_s
 };
 
 /* Finally, this structure defines everything about the font set */
-
+//中文支持修改
 struct nx_fontpackage_s
 {
   uint8_t id;                            /* The font ID */

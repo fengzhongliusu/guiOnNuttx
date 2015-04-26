@@ -181,7 +181,7 @@ static void nxbg_position(NXWINDOW hwnd, FAR const struct nxgl_size_s *size,
 
       /* Save the background window size */
 
-      st->wsize.w = size->w;
+      st->wsize.w = size->w; //TODO
       st->wsize.h = size->h;
 
       /* Save the window limits (these should be the same for all places and all windows */
@@ -247,8 +247,8 @@ static inline void nxbg_movedisplay(NXWINDOW hwnd, int bottom, int lineheight)
 
   rect.pt1.x = 0;
   rect.pt2.x = g_bgstate.wsize.w - 1;
-
-  for (row = LINE_SEPARATION; row < bottom; row += lineheight)
+	
+  for (row = LINE_SEPARATION; row < bottom; row += lineheight)	//Space (in rows) between lines
     {
       /* Create a bounding box the size of one row of characters */
 
@@ -348,7 +348,7 @@ static inline void nxbg_scroll(NXWINDOW hwnd, int lineheight)
  ****************************************************************************/
 
 /****************************************************************************
- * Name: nxbg_getstate
+ * Name: nxbg_getstate  
  *
  * Description:
  *   Initialize the background window state structure.
@@ -401,7 +401,7 @@ void nxbg_write(NXWINDOW hwnd, FAR const uint8_t *buffer, size_t buflen)
 
   while (buflen-- > 0)
     {
-      /* Will another character fit on this line? */
+      /* Will another character fit on this line? 判断是否换行*/
 
       if (g_bgstate.fpos.x + g_bgstate.fwidth > g_bgstate.wsize.w)
         {

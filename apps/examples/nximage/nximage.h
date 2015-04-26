@@ -109,27 +109,27 @@
 
 /* Image Information ********************************************************/
 
-#define IMAGE_HEIGHT       160  /* Number of rows in the raw image */
-#define IMAGE_WIDTH        160  /* Number of columns in the raw image */
+#define IMAGE_HEIGHT       220  /* Number of rows in the raw image */
+#define IMAGE_WIDTH        220 /* Number of columns in the raw image */
 
 #if defined(CONFIG_EXAMPLES_NXIMAGE_XSCALEp5)
-#  define SCALED_WIDTH     80   /* Number of columns in the scaled image */
+#  define SCALED_WIDTH     110 /* Number of columns in the scaled image */
 #elif defined(CONFIG_EXAMPLES_NXIMAGE_XSCALE1p5)
-#  define SCALED_WIDTH     240  /* Number of columns in the scaled image */
+#  define SCALED_WIDTH     330  /* Number of columns in the scaled image */
 #elif defined(CONFIG_EXAMPLES_NXIMAGE_XSCALE2p0)
-#  define SCALED_WIDTH     320  /* Number of columns in the scaled image */
+#  define SCALED_WIDTH     440  /* Number of columns in the scaled image */
 #else
-#  define SCALED_WIDTH     160  /* Number of columns in the scaled image */
+#  define SCALED_WIDTH     220  /* Number of columns in the scaled image */
 #endif
 
 #if defined(CONFIG_EXAMPLES_NXIMAGE_YSCALEp5)
-#  define SCALED_HEIGHT    80   /* Number of rows in the scaled image */
+#  define SCALED_HEIGHT    110   /* Number of rows in the scaled image */
 #elif defined(CONFIG_EXAMPLES_NXIMAGE_YSCALE1p5)
-#  define SCALED_HEIGHT    240  /* Number of rows in the scaled image */
+#  define SCALED_HEIGHT    330  /* Number of rows in the scaled image */
 #elif defined(CONFIG_EXAMPLES_NXIMAGE_YSCALE2p0)
-#  define SCALED_HEIGHT    320  /* Number of rows in the scaled image */
+#  define SCALED_HEIGHT    440  /* Number of rows in the scaled image */
 #else
-#  define SCALED_HEIGHT    160  /* Number of rows in the scaled image */
+#  define SCALED_HEIGHT    220  /* Number of rows in the scaled image */
 #endif
 
 /****************************************************************************

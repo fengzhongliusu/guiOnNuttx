@@ -81,7 +81,7 @@
 #endif
 
 /* Vertical scaling */
-
+//Y轴缩小一倍
 #if defined(CONFIG_EXAMPLES_NXIMAGE_YSCALEp5)
 
 /* Read two rows, output one averaged row */
@@ -276,7 +276,7 @@ static void nximage_kbdin(NXWINDOW hwnd, uint8_t nch, FAR const uint8_t *ch,
 
 void nximage_image(NXWINDOW hwnd)
 {
-  FAR const void *state = NULL;
+  FAR const void *state = NULL; //TODO ??
   FAR struct nxgl_point_s pos;
   FAR struct nxgl_rect_s dest;
   FAR const void *src[CONFIG_NX_NPLANES];

@@ -329,7 +329,7 @@
 
 /* 'a' (97) */
 #define NXFONT_METRICS_97 {1, 6, 7, 1, 7, 0}
-#define NXFONT_BITMAP_97  {0x70, 0x88, 0x08, 0x78, 0x88, 0x88, 0x74}
+#define NXFONT_BITMAP_97  {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
 
 /* 'b' (98) */
 #define NXFONT_METRICS_98 {1, 6, 10, 1, 4, 0}

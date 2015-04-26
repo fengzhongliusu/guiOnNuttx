@@ -47,6 +47,7 @@
 #include <semaphore.h>
 #include <errno.h>
 #include <debug.h>
+#include <iconv.h>
 
 #include <nuttx/nx/nx.h>
 #include <nuttx/nx/nxglib.h>
@@ -83,6 +84,8 @@
 /****************************************************************************
  * Private Types
  ****************************************************************************/
+/** added by cshuo **/
+#define GBKLEN 255
 
 /****************************************************************************
  * Private Function Prototypes
@@ -108,7 +111,7 @@ static void nxhello_kbdin(NXWINDOW hwnd, uint8_t nch, FAR const uint8_t *ch,
  * Private Data
  ****************************************************************************/
 
-static const char g_hello[] = "hello,world";
+static const char g_hello[] = "你好";
 
 /****************************************************************************
  * Public Data
@@ -217,28 +220,44 @@ static void nxhello_center(FAR struct nxgl_point_s *pos,
                            FAR const struct nx_font_s *fontset)
 {
   FAR const struct nx_fontbitmap_s *fbm;
-  FAR uint8_t *ptr;
+  FAR const char *ptr;
   unsigned int width;
 
   /* Get the width of the collection of characters so that we can center the
    * hello world message.
    */
+  
+  printf(".................the length of a en cha: %d\n",strlen(g_hello));
 
-  for (ptr = (uint8_t*)g_hello, width = 0; *ptr; ptr++)
+  unsigned char gbk_str[GBKLEN];
+
+  u2g(g_hello,strlen(g_hello),gbk_str,GBKLEN);
+
+  for (ptr = (uint8_t*)gbk_str, width = 0; *ptr;)
     {
       /* Get the font bitmap for this character */
+	  if((uint8_t)(*ptr) < 0x80){    // en word
+		  printf("less 0x80!!!!!!!!!!!!!!!!!!!!!\n");
+	      fbm = nxf_getbitmap(g_nxhello.hfont, *ptr);
+		  ptr++;
+	  }
+	  else {
+		  printf("more 0x80!!!!!!!!!!!!!!!!!!!!!\n");
+		  uint16_t* cn_code = {*ptr,*(ptr+1)};
+		  printf("more_1 0x80!!!!!!!!!!!!!!!!!!!!!\n");
+		  fbm = nxf_getbitmap(g_nxhello.hfont, *cn_code);
+		  ptr += 2;
+	  }
 
-      fbm = nxf_getbitmap(g_nxhello.hfont, *ptr);
       if (fbm)
         {
           /* Add the font size */
 
           width += fbm->metric.width + fbm->metric.xoffset;
-		  printf("------%d-----%d\n",fbm->metric.width,fbm->metric.xoffset);
         }
       else
         {
-           /* Use the width of a space */
+           /* Use the width of a space */ 
 
           width += fontset->spwidth;
         }
@@ -250,8 +269,8 @@ static void nxhello_center(FAR struct nxgl_point_s *pos,
 
   //pos->x = (g_nxhello.xres - width) / 3;
   //pos->y = (g_nxhello.yres - fontset->mxheight) / 2;
-  pos->x = 0;
-  pos->y = 0;
+  //pos->x = 0;
+  //pos->y = 0;
 }
 
 /****************************************************************************
@@ -321,7 +340,7 @@ static void nxhello_initglyph(FAR uint8_t *glyph, uint8_t height,
       /* Just copy the color value into the glyph memory */
       for (col = 0; col < width; col++)
         {
-          *ptr++ = CONFIG_EXAMPLES_NXHELLO_BGCOLOR + row * 0x111111;
+          *ptr++ = CONFIG_EXAMPLES_NXHELLO_BGCOLOR;
 #if CONFIG_NX_NPLANES > 1
 # warning "More logic is needed for the case where CONFIG_NX_PLANES > 1"
 #endif
@@ -420,20 +439,34 @@ void nxhello_hello(NXWINDOW hwnd)
   line6.pt1.y = pos.y;
   line6.pt2.x = pos.x + 239;
   line6.pt2.y = pos.y + 239;
-  nx_drawline((NXWINDOW)hwnd,&line1,line_width,&rec_color); 
-  nx_drawline((NXWINDOW)hwnd,&line2,line_width,&rec_color); 
-  nx_drawline((NXWINDOW)hwnd,&line3,line_width,&rec_color); 
-  nx_drawline((NXWINDOW)hwnd,&line4,line_width,&rec_color); 
-  nx_drawline((NXWINDOW)hwnd,&line5,line_width,&rec_color); 
-  nx_drawline((NXWINDOW)hwnd,&line6,line_width,&rec_color); 
+  //nx_drawline((NXWINDOW)hwnd,&line1,line_width,&rec_color); 
+  //nx_drawline((NXWINDOW)hwnd,&line2,line_width,&rec_color); 
+  //nx_drawline((NXWINDOW)hwnd,&line3,line_width,&rec_color); 
+  //nx_drawline((NXWINDOW)hwnd,&line4,line_width,&rec_color); 
+  //nx_drawline((NXWINDOW)hwnd,&line5,line_width,&rec_color); 
+  //nx_drawline((NXWINDOW)hwnd,&line6,line_width,&rec_color); 
   /************************testing*********************/
 
+  unsigned char gbk_str[GBKLEN];
+
+  int ug_ret = u2g(g_hello,strlen(g_hello),gbk_str,GBKLEN);
+  if(ug_ret < 0)
+	 printf("error convert utf to gbk.....\n");
+
   /* Now we can say "hello" in the center of the display. */
-  for (ptr = g_hello; *ptr; ptr++)
+  for (ptr = (uint8_t*)gbk_str; *ptr;)
     {
       /* Get the bitmap font for this ASCII code */
 	  //获取每一个字符的位图信息
-      fbm = nxf_getbitmap(g_nxhello.hfont, *ptr);
+	  if((uint8_t)(*ptr) < 0x80){  //en chara
+		 fbm = nxf_getbitmap(g_nxhello.hfont, *ptr);
+		 ptr++;
+	  }
+	  else {    //cn chara
+		  uint16_t *cn_code = {*ptr,*(ptr+1)};
+		  fbm = nxf_getbitmap(g_nxhello.hfont, *cn_code);
+		  ptr += 2;
+	  }
       if (fbm)
         {
           uint8_t fheight;      /* Height of this glyph (in rows) */
@@ -509,4 +542,33 @@ void nxhello_hello(NXWINDOW hwnd)
   /* Free the allocated glyph */
 
   free(glyph);
+}
+
+
+
+//代码转换:从一种编码转为另一种编码
+int code_convert(char *from_charset,char *to_charset,char *inbuf,int inlen,char *outbuf,int outlen)
+{
+	iconv_t cd;
+	int rc;
+	char **pin = &inbuf;
+	char **pout = &outbuf;
+
+	cd = iconv_open(to_charset,from_charset);
+	if (cd==0) {
+		return -1;
+		printf("open failed....\n");
+	}
+	memset(outbuf,0,outlen);
+	if (iconv(cd,pin,&inlen,pout,&outlen)==-1){
+	   	return -1;
+	}
+	iconv_close(cd);
+	return 0;
+}
+
+//UNICODE码转为GB2312码
+int u2g(const char *inbuf,int inlen,char *outbuf,int outlen)
+{
+		return code_convert("utf-8","gb2312",inbuf,inlen,outbuf,outlen);
 }

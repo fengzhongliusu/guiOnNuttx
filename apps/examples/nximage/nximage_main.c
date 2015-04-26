@@ -270,7 +270,7 @@ int nximage_main(int argc, char *argv[])
   /* Now, put up the NuttX logo and wait a bit so that it visible. */
 
   nximage_image(g_nximage.hbkgd);
-  sleep(5);
+  sleep(1000);
 
   /* Release background */
 

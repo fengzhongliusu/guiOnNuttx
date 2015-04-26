@@ -256,6 +256,7 @@ static inline FAR const struct nx_fontset_s *
 {
   FAR const struct nx_fontset_s *fontset;
 
+  printf("enter getglyph.....\n");
   /* Select the 7- or 8-bit font set */
 
   if (ch < 128)
@@ -277,14 +278,21 @@ static inline FAR const struct nx_fontset_s *
     }
   else
     {
+		printf("ch is now large than 256 .......\n");
       /* Someday, perhaps 16-bit fonts will go here */
-
-      gdbg("16-bit font not currently supported\n");
+		//修改以支持中文
+#if CONFIG_NXFONTS_CHARBITS >= 16 
+      /* Select the 8-bit font set */
+      fontset = &package->font8;
+#else
+      gdbg("8-bit font support disabled: %d\n", ch);
       return NULL;
+#endif
     }
 
   /* Then verify that the character actually resides in the font */
-
+  //字符code在对应font packge 范围内
+  //中文这样判断有问题(不连续),不影响结果
   if (ch >= fontset->first && ch < fontset->first +fontset->nchars)
     {
       return fontset;
@@ -399,10 +407,16 @@ FAR const struct nx_font_s *nxf_getfontset(NXHANDLE handle)
 
 FAR const struct nx_fontbitmap_s *nxf_getbitmap(NXHANDLE handle, uint16_t ch)
 {
+  printf("enter getbitmap..............\n");
   FAR const struct nx_fontpackage_s *package =
     (FAR const struct nx_fontpackage_s *)handle;
   FAR const struct nx_fontset_s     *fontset;
   FAR const struct nx_fontbitmap_s  *bm  = NULL;
+  /** add by cshuo **/
+  FAR uint8_t ch_H, ch_L,first_H,first_L;
+  FAR uint16_t first_code;
+  FAR uint16_t ch_index;
+  /** add by cshuo **/
 
   /* Verify that the handle is a font package */
 
@@ -410,12 +424,26 @@ FAR const struct nx_fontbitmap_s *nxf_getbitmap(NXHANDLE handle, uint16_t ch)
     {
       /* Now get the fontset from the package */
 
+      printf("enter if before getplygh.....\n");
       fontset = nxf_getglyphset(ch, package);
       if (fontset)
         {
           /* Then get the bitmap from the font set */
-
+		   //根据字符ascii码到font packege里找到相应的bitmap信息
+#if CONFIG_NXFONTS_CHARBITS < 8
           bm = &fontset->bitmap[ch - fontset->first];
+#else
+		  //汉字分区存储，每个区域有94个汉字
+		  printf("%02x-------------\n",ch);
+		  first_code = fontset->first;
+		  first_H = first_code >> 8;
+		  first_L = first_code - (first_H << 8);
+		  ch_H = ch >> 8;
+		  ch_L = ch - (ch_H << 8);
+		  ch_index = (ch_H - first_H)*94 + ch_L - first_L;
+		  bm = &fontset->bitmap[ch_index];
+#endif 
+
         }
     }
 

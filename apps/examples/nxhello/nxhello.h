@@ -45,6 +45,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <semaphore.h>
+#include <iconv.h>
 
 #include <nuttx/nx/nxglib.h>
 #include <nuttx/nx/nx.h>
@@ -176,5 +177,10 @@ extern FAR NX_DRIVERTYPE *up_nxdrvinit(unsigned int devno);
 /* Background window interfaces */
 
 extern void nxhello_hello(NXWINDOW hwnd);
+
+/* added by cshuo */
+extern int code_convert(char *from_charset,char *to_charset,char *inbuf,int inlen,char *outbuf,int outlen);
+extern int u2g(const char *inbuf,int inlen,char *outbuf,int outlen);
+/* added by cshuo */
 
 #endif /* __APPS_EXAMPLES_NXHELLO_NXHELLO_H */
