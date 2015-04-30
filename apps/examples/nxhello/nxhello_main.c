@@ -229,8 +229,8 @@ int nxhello_main(int argc, char *argv[])
 
   /* Get the default font handle */
 
-  g_nxhello.hfont = nxf_getfonthandle(FONTID_CN32X32);
-  g_nxhello.hfont2 = nxf_getfonthandle(FONTID_SANS28X37);
+  g_nxhello.hfont = nxf_getfonthandle(FONTID_SANS28X37);
+  g_nxhello.hfont2 = nxf_getfonthandle(FONTID_CN32X32);
   if (!g_nxhello.hfont || !g_nxhello.hfont2)
     {
       printf("nxhello_main: Failed to get font handle: %d\n", errno);
@@ -275,7 +275,7 @@ int nxhello_main(int argc, char *argv[])
   /* Now, say hello and exit, sleeping a little before each. */
 
   sleep(1);
-  nxhello_hello(g_nxhello.hbkgd);
+  d_nxhello(g_nxhello.hbkgd);
   sleep(1000);
 
   /* Release background */

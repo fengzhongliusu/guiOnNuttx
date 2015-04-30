@@ -177,7 +177,8 @@ extern FAR NX_DRIVERTYPE *up_nxdrvinit(unsigned int devno);
 
 /* Background window interfaces */
 
-extern void nxhello_hello(NXWINDOW hwnd);
+extern void nxhello_hello(NXWINDOW hwnd,const char* str,int sign);
+extern void d_nxhello(NXWINDOW hwnd);
 
 /* added by cshuo */
 extern int code_convert(char *from_charset,char *to_charset,char *inbuf,int inlen,char *outbuf,int outlen);
