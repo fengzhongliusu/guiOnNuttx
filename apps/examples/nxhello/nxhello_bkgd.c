@@ -112,7 +112,7 @@ static void nxhello_kbdin(NXWINDOW hwnd, uint8_t nch, FAR const uint8_t *ch,
  ****************************************************************************/
 
 static const char g_hello[] = "诸葛高   皇甫杰   魑魅魍魉";
-static const char g_sm[] = "啊啊啊 诸葛高 皇甫杰 魑魅魍魉 ？";
+static const char g_sm[] = "啊啊啊 诸葛高 皇甫杰 魑魅魍魉";
 
 /****************************************************************************
  * Public Data
@@ -335,7 +335,8 @@ static void nxhello_initglyph(FAR uint8_t *glyph, uint8_t height,
 
 void d_nxhello(NXWINDOW hwnd){
 	nxhello_hello(hwnd,g_hello,1);
-	nxhello_hello(hwnd,g_sm,2);
+	nxhello_hello(hwnd,g_hello,2);
+	nxhello_hello(hwnd,g_hello,3);
 }
 
 void nxhello_hello(NXWINDOW hwnd,const char* str, int sign)
@@ -357,8 +358,11 @@ void nxhello_hello(NXWINDOW hwnd,const char* str, int sign)
 
   if(sign == 1)
 	  fontset = nxf_getfontset(g_nxhello.hfont);
-  else 
+  else if(sign == 2) 
 	  fontset = nxf_getfontset(g_nxhello.hfont2);
+  else {
+	  fontset = nxf_getfontset(g_nxhello.hfont3);
+  }
 
 
   /* Allocate a bit of memory to hold the largest rendered font */
@@ -380,19 +384,20 @@ void nxhello_hello(NXWINDOW hwnd,const char* str, int sign)
 	  pos.x = 0;
 	  pos.y = 0;
   }
-  else {
+  else if(sign == 2){
 	  pos.x = 0;
 	  pos.y = 50;
+  }
+  else {
+	  pos.x = 0;
+	  pos.y = 100;
   }
   printf("nxhello_hello: Position (%d,%d)\n", pos.x, pos.y);
  
 
   unsigned char gbk_str[GBKLEN];
 
-  if(sign == 1)
-	  u2g(g_hello,strlen(g_hello),gbk_str,GBKLEN); //convert utf to gb2312 code
-  else 
-	  u2g(g_sm,strlen(g_sm),gbk_str,GBKLEN); //convert utf to gb2312 code
+  u2g(str,strlen(str),gbk_str,GBKLEN); //convert utf to gb2312 code
 	
 
   /* Now we can say "hello" in the center of the display. */
@@ -404,8 +409,10 @@ void nxhello_hello(NXWINDOW hwnd,const char* str, int sign)
 		  printf("en code is %x......\n",*ptr);
 		  if(sign == 1)
 			 fbm = nxf_getbitmap(g_nxhello.hfont, *ptr);
-		  else 
+		  else if(sign == 2)
 			 fbm = nxf_getbitmap(g_nxhello.hfont2, *ptr);
+		  else 
+			 fbm = nxf_getbitmap(g_nxhello.hfont3, *ptr);
 		 ptr++;
 	  }
 	  else {    //cn chara
@@ -413,8 +420,10 @@ void nxhello_hello(NXWINDOW hwnd,const char* str, int sign)
 		  gdbg("cn code is %02x............\n",cn_code);
 		  if(sign == 1)
 			  fbm = nxf_getbitmap(g_nxhello.hfont, cn_code);
-		  else 
+		  else if(sign == 2)
 			  fbm = nxf_getbitmap(g_nxhello.hfont2, cn_code);
+		  else 
+			  fbm = nxf_getbitmap(g_nxhello.hfont3, cn_code);
 		  ptr += 2;
 	  }
       if (fbm)

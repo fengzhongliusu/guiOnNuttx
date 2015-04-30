@@ -7,7 +7,7 @@ with open("nxfonts_bitmaps_sans28x37.c","a") as fw:
         h = 0xa0 + row
         l = 0xa0 + col
         data = (h<<8) + l
-        fw.write("    { {4,30,32,3,12,0}, l_cn_%x },\n" % data);
+        fw.write("    { {5,48,48,5,15,0}, xl_cn_%x },\n" % data);
         count += 1
         if(count > 94):
             count = 1

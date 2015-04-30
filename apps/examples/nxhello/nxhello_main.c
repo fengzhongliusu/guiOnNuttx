@@ -104,6 +104,7 @@ struct nxhello_data_s g_nxhello =
   NULL,          /* hbkgd */
   NULL,          /* hfont */
   NULL,				//hfont2
+  NULL,				//hfont3
   0,             /* xres */
   0,             /* yres */
   false,         /* havpos */
@@ -231,7 +232,8 @@ int nxhello_main(int argc, char *argv[])
 
   g_nxhello.hfont = nxf_getfonthandle(FONTID_SANS28X37);
   g_nxhello.hfont2 = nxf_getfonthandle(FONTID_CN32X32);
-  if (!g_nxhello.hfont || !g_nxhello.hfont2)
+  g_nxhello.hfont3 = nxf_getfonthandle(FONTID_CN48X48);
+  if (!g_nxhello.hfont || !g_nxhello.hfont2 || !g_nxhello.hfont3)
     {
       printf("nxhello_main: Failed to get font handle: %d\n", errno);
       g_nxhello.code = NXEXIT_FONTOPEN;

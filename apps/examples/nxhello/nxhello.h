@@ -144,6 +144,7 @@ struct nxhello_data_s
   NXHANDLE hbkgd;
   NXHANDLE hfont;
   NXHANDLE hfont2;
+  NXHANDLE hfont3;
 
   /* The screen resolution */
 

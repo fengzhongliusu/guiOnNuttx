@@ -92,6 +92,10 @@ extern const struct nx_fontpackage_s g_sans28x37_package;
 extern const struct nx_fontpackage_s g_cn32x32_package;
 #endif 
 
+#ifdef CONFIG_NXFONT_CN48X48
+extern const struct nx_fontpackage_s g_cn48x48_package;
+#endif 
+
 #ifdef CONFIG_NXFONT_SANS39X48
 extern const struct nx_fontpackage_s g_sans39x48_package;
 #endif
@@ -160,6 +164,9 @@ static FAR const struct nx_fontpackage_s *g_fontpackages[] =
   &g_cn32x32_package,
 #endif 
 
+#ifdef CONFIG_NXFONT_CN48X48
+  &g_cn48x48_package,
+#endif 
 /* SANS */
 
 #ifdef CONFIG_NXFONT_SANS17X22

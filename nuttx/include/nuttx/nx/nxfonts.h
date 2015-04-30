@@ -136,6 +136,9 @@ enum nx_fontid_e
   , FONTID_CN32X32 = 19
 #endif 
 
+#ifdef CONFIG_NXFONT_CN48X48
+  , FONTID_CN48X48 = 20 
+#endif 
 /* Monospace fonts */
 
 #ifdef CONFIG_NXFONT_MONO5X8
