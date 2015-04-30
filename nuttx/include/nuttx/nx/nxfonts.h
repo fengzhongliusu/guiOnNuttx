@@ -130,6 +130,12 @@ enum nx_fontid_e
 {
   FONTID_DEFAULT     = 0         /* The default font */
 
+
+/* add by cshuo*/
+#ifdef CONFIG_NXFONT_CN32X32
+  , FONTID_CN32X32 = 19
+#endif 
+
 /* Monospace fonts */
 
 #ifdef CONFIG_NXFONT_MONO5X8

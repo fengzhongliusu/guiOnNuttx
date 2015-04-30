@@ -111,7 +111,8 @@ static void nxhello_kbdin(NXWINDOW hwnd, uint8_t nch, FAR const uint8_t *ch,
  * Private Data
  ****************************************************************************/
 
-static const char g_hello[] = "你好";
+static const char g_hello[] = "诸葛高   皇甫杰   魑魅魍魉";
+static const char g_sm[] = "诸葛高 皇甫杰 魑魅魍魉";
 
 /****************************************************************************
  * Public Data
@@ -233,35 +234,6 @@ static void nxhello_center(FAR struct nxgl_point_s *pos,
 
   u2g(g_hello,strlen(g_hello),gbk_str,GBKLEN);
 
-  for (ptr = (uint8_t*)gbk_str, width = 0; *ptr;)
-    {
-      /* Get the font bitmap for this character */
-	  if((uint8_t)(*ptr) < 0x80){    // en word
-		  printf("less 0x80!!!!!!!!!!!!!!!!!!!!!\n");
-	      fbm = nxf_getbitmap(g_nxhello.hfont, *ptr);
-		  ptr++;
-	  }
-	  else {
-		  printf("more 0x80!!!!!!!!!!!!!!!!!!!!!\n");
-		  uint16_t* cn_code = {*ptr,*(ptr+1)};
-		  printf("more_1 0x80!!!!!!!!!!!!!!!!!!!!!\n");
-		  fbm = nxf_getbitmap(g_nxhello.hfont, *cn_code);
-		  ptr += 2;
-	  }
-
-      if (fbm)
-        {
-          /* Add the font size */
-
-          width += fbm->metric.width + fbm->metric.xoffset;
-        }
-      else
-        {
-           /* Use the width of a space */ 
-
-          width += fontset->spwidth;
-        }
-    } 
 
   /* Now we know how to center the string.  Create a the position and
    * the bounding box
@@ -269,8 +241,8 @@ static void nxhello_center(FAR struct nxgl_point_s *pos,
 
   //pos->x = (g_nxhello.xres - width) / 3;
   //pos->y = (g_nxhello.yres - fontset->mxheight) / 2;
-  //pos->x = 0;
-  //pos->y = 0;
+  pos->x = 0;
+  pos->y = 0;
 }
 
 /****************************************************************************
@@ -366,7 +338,7 @@ void nxhello_hello(NXWINDOW hwnd)
   FAR const struct nx_font_s *fontset;
   FAR const struct nx_fontbitmap_s *fbm;
   FAR uint8_t *glyph;
-  FAR const char *ptr;
+  FAR const unsigned char *ptr;
   FAR struct nxgl_point_s pos;
   FAR struct nxgl_rect_s dest;
   FAR struct nxgl_rect_s test_rec;
@@ -382,6 +354,7 @@ void nxhello_hello(NXWINDOW hwnd)
 
   /* Allocate a bit of memory to hold the largest rendered font */
 
+  //glyph申请空间, 潜在问题//TODO
   mxstride  = (fontset->mxwidth * CONFIG_EXAMPLES_NXHELLO_BPP + 7) >> 3;
   glyphsize = (unsigned int)fontset->mxheight * mxstride;
   glyph     = (FAR uint8_t*)malloc(glyphsize);
@@ -397,61 +370,10 @@ void nxhello_hello(NXWINDOW hwnd)
   nxhello_center(&pos, fontset);
   printf("nxhello_hello: Position (%d,%d)\n", pos.x, pos.y);
  
-  /************************testing*********************/
-  //draw a rectagular 
-  //test_rec.pt1.x = pos.x+60;
-  //test_rec.pt1.y = pos.y+60;
-  //test_rec.pt2.x = pos.x + 150;
-  //test_rec.pt2.y = pos.y + 150;
-  nxgl_mxpixel_t rec_color = 0xDC143C;
-  //ret = nx_fill((NXWINDOW)hwnd,&test_rec,&rec_color);
-  
-  
-  //draw a rec by line 
-  FAR struct nxbe_window_s * wnd =  hwnd;
-
-  FAR struct nxgl_vector_s line1,line2,line3,line4,line5,line6;
-  nxgl_coord_t line_width = 3;
-  line1.pt1 = pos;
-  line1.pt2.x = pos.x + 479;
-  line2.pt2.y = pos.y;
-
-  line2.pt1.x = pos.x;
-  line2.pt1.y = pos.y + 239;
-  line2.pt2.x = pos.x + 479;
-  line2.pt2.y = pos.y + 239;
-
-  line3.pt1 = pos;
-  line3.pt2.x = pos.x;
-  line3.pt2.y = pos.y + 239;
-
-  line4.pt1.x = pos.x + 479;
-  line4.pt1.y = pos.y;
-  line4.pt2.x = pos.x + 479;
-  line4.pt2.y = pos.y + 239;
-
-  line5.pt1.x = pos.x;
-  line5.pt1.y = pos.y + 119;
-  line5.pt2.x = pos.x + 479;
-  line5.pt2.y = pos.y + 119;
-
-  line6.pt1.x = pos.x + 239;
-  line6.pt1.y = pos.y;
-  line6.pt2.x = pos.x + 239;
-  line6.pt2.y = pos.y + 239;
-  //nx_drawline((NXWINDOW)hwnd,&line1,line_width,&rec_color); 
-  //nx_drawline((NXWINDOW)hwnd,&line2,line_width,&rec_color); 
-  //nx_drawline((NXWINDOW)hwnd,&line3,line_width,&rec_color); 
-  //nx_drawline((NXWINDOW)hwnd,&line4,line_width,&rec_color); 
-  //nx_drawline((NXWINDOW)hwnd,&line5,line_width,&rec_color); 
-  //nx_drawline((NXWINDOW)hwnd,&line6,line_width,&rec_color); 
-  /************************testing*********************/
 
   unsigned char gbk_str[GBKLEN];
 
-  int ug_ret = u2g(g_hello,strlen(g_hello),gbk_str,GBKLEN);
-  if(ug_ret < 0)
-	 printf("error convert utf to gbk.....\n");
+  u2g(g_hello,strlen(g_hello),gbk_str,GBKLEN); //convert utf to gb2312 code
 
   /* Now we can say "hello" in the center of the display. */
   for (ptr = (uint8_t*)gbk_str; *ptr;)
@@ -459,12 +381,14 @@ void nxhello_hello(NXWINDOW hwnd)
       /* Get the bitmap font for this ASCII code */
 	  //获取每一个字符的位图信息
 	  if((uint8_t)(*ptr) < 0x80){  //en chara
+		  printf("en code is %x......\n",*ptr);
 		 fbm = nxf_getbitmap(g_nxhello.hfont, *ptr);
 		 ptr++;
 	  }
 	  else {    //cn chara
-		  uint16_t *cn_code = {*ptr,*(ptr+1)};
-		  fbm = nxf_getbitmap(g_nxhello.hfont, *cn_code);
+		  uint16_t cn_code = *(ptr+1)+((*ptr)<<8);
+		  gdbg("cn code is %02x............\n",cn_code);
+		  fbm = nxf_getbitmap(g_nxhello.hfont, cn_code);
 		  ptr += 2;
 	  }
       if (fbm)
@@ -478,7 +402,6 @@ void nxhello_hello(NXWINDOW hwnd)
           fwidth  = fbm->metric.width + fbm->metric.xoffset;
           fheight = fbm->metric.height + fbm->metric.yoffset;
           fstride = (fwidth * CONFIG_EXAMPLES_NXHELLO_BPP + 7) >> 3;
-		  printf("%d %d %d\n",fheight,fwidth,fstride);
 
           /* Initialize the glyph memory to the background color */
 
